@@ -1,0 +1,38 @@
+CREATE DATABASE db_inventory_siti_xi4
+
+CREATE TABLE barang
+(id_barang varchar(20) primary key,
+ id_barang int,
+ nama_barang varchar (20),
+ harga int,
+ stok int,
+ warna varchar (20));
+
+CREATE TABLE jenis_barang
+(id_jenis varchar (20) primary key,
+ nama_jenis varchar (20));
+
+INSERT INTO barang VALUES 
+("B01","1","Kipas Angin","100000","20","pink"),
+("B02","2","TV","3000000","33","hitam"),
+("B03","3","Mesin Cuci","5000000","44","putih");
+
+INSERT INTO jenis_barang VALUES
+("B01","Electronik"),
+("B02","Electronik"),
+("B03","Electronik");
+
+ALTER TABLE barang ADD FOREIGN KEY (id_jenis) REFERENCES jenis_barang
+(id_jenis) 
+on DELETE CASCADE
+on UPDATE CASCADE;
+
+
+
+
+
+
+
+
+
+
