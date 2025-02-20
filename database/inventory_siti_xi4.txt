@@ -29,6 +29,340 @@ on UPDATE CASCADE;
 
 
 
+CODDINGAN 
+
+Barang
+1. index.php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <title>Inventory Barang</title>
+</head>l
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Barang</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../jenis_barang">Jenis Barang</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+    <div class="container">
+    <h1>Data Barang</h1>
+    <a href="view_tambah.php" class="btn btn-info">Tambah data baru</a>
+       <table class="table table-striped table-hover">
+        <tr>
+            <th>No.</th>
+            <th>Id Barang</th>
+            <th>Nama Barang</th>
+            <th>Id Jenis</th>
+            <th>Harga</th>
+            <th>Stok</th>
+            <th>Warna</th>
+            <th>Aksi</th>
+        </tr>
+        <?php 
+        include '../../config/koneksi.php';
+        $query = mysqli_query($conn,"SELECT * FROM barang");
+        $no=1;
+        if(mysqli_num_rows(result: $query)){
+        
+            while ($result=mysqli_fetch_assoc(result:$query)){
+                ?>
+                <tr>
+                    <td><?php echo $no ?></td>
+                    <td><?php echo $result['id_barang'] ?></td>
+                    <td><?php echo $result['nama_barang'] ?></td>
+                    <td><?php echo $result['id_jenis'] ?></td>
+                    <td><?php echo $result['harga'] ?></td>
+                    <td><?php echo $result['stok'] ?></td>
+                    <td><?php echo $result['warna'] ?></td>
+                    <td>
+                        <a href="" class="btn btn-warning">Edit </a>
+                        <a href="" class="btn btn-danger" >Hapus</a>
+                    </td>
+                </tr>
+                <?php
+                $no++;
+            }
+        } else{
+            echo "Data kosong";
+        }
+        ?>
+       </table>
+    </div>
+       
+</body>
+</html>
+
+2. simpan.php
+<?php
+
+$id_barang =$_POST['id_barang'];
+$nama_barang =$_POST['nama_barang'];
+$id_jenis =$_POST['id_jenis'];
+$harga =$_POST['harga'];
+$stok =$_POST['stok'];
+$warna =$_POST['warna'];
+
+include '../../config/koneksi.php';
+
+$query = mysqli_query($conn, "INSERT INTO barang VALUES('$id_barang','$id_jenis','$nama_barang',
+'$harga','$stok','$warna')");
+
+if($query){
+    echo "<script>alert('Tambah berhasil')</script>";
+    echo "<script>window.location.href='index.php'</script>";
+}
+else{
+    echo "<script>alert('Tambah gagal')</script>";
+    echo "<script>window.location.href='tambah.php'</script>";
+}
+
+3. view_tambah.php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <title>Inventory Barang</title>
+</head>
+<body>
+<div class="container">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Barang</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Jenis</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+    <h1>Data barang baru </h1>
+    <form action="simpan.php" method="POST">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Id barang</label>
+            <input type="number" class="form-control" name="id_barang" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+         <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Nama barang</label>
+            <input type="text" class="form-control" name="nama_barang" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Id jenis</label>
+            <input type="text" class="form-control" name="id_jenis" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">harga</label>
+            <input type="number" class="form-control" name="harga" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">stok</label>
+            <input type="number" class="form-control" name="stok" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">warna</label>
+            <input type="text" class="form-control" name="warna" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <button type="submit" class="btn btn-primary">submit</button>
+    </form>
+</div>
+</body>
+</html>
+
+CODDINGAN
+
+Jenis_Barang
+
+1. index.php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <title>Inventory Barang</title>
+</head>l
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Jenis barang</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../Barang">Barang</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+    <div class="container">
+    <h1>Data Jenis Barang</h1>
+    <a href="tambah.php" class="btn btn-info">Tambah data baru</a>
+       <table class="table table-striped table-hover">
+        <tr>
+            <th>No.</th>
+            <th>Id Jenis</th>
+            <th>Nama Jenis</th>
+            <th>Aksi</th>
+        </tr>
+        <?php 
+        include '../../config/koneksi.php';
+        $query = mysqli_query($conn,"SELECT * FROM jenis_barang");
+        $no=1;
+        if(mysqli_num_rows(result: $query)){
+        
+            while ($result=mysqli_fetch_assoc(result:$query)){
+                ?>
+                <tr>
+                    <td><?php echo $no ?></td>
+                    <td><?php echo $result['id_jenis'] ?></td>
+                    <td><?php echo $result['nama_jenis'] ?></td>
+                    <td>
+                        <a href="" class="btn btn-warning">Edit </a>
+                        <a href="" class="btn btn-danger" >Hapus</a>
+                    </td>
+                </tr>
+                <?php
+                $no++;
+            }
+        } else{
+            echo "Data kosong";
+        }
+        ?>
+       </table>
+    </div>
+       
+</body>
+</html>
+
+2. tambah.php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <title>Inventory Barang</title>
+</head>
+<body>
+<div class="container">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Barang</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Jenis</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+    <h1>Data barang baru </h1>
+    <form action="simpan.php" method="POST">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Id Jenis</label>
+            <input type="text" class="form-control" name="id_jenis" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+         <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Nama Jenis</label>
+            <input type="text" class="form-control" name="nama_jenis" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <button type="submit" class="btn btn-primary">submit</button>
+    </form>
+</div>
+</body>
+</html>
+
+3. simpan.php
+<?php
+
+$id_jenis =$_POST['id_jenis'];
+$nama_jenis =$_POST['nama_jenis'];
+
+include '../../config/koneksi.php';
+
+$query = mysqli_query($conn, "INSERT INTO jenis_barang VALUES('$id_jenis','$nama_jenis')");
+
+if($query){
+    echo "<script>alert('Tambah berhasil')</script>";
+    echo "<script>window.location.href='index.php'</script>";
+}
+else{
+    echo "<script>alert('Tambah gagal')</script>";
+    echo "<script>window.location.href='tambah.php'</script>";
+}
+
 
 
 
