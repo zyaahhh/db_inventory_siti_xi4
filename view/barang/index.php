@@ -76,7 +76,7 @@
                     <td><?php echo $result['warna'] ?></td>
                     <td>
                         <a href="view_edit.php?id_barang=<?php echo $result['id_barang']?>" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>Edit </a>
-                        <a href="" onclick="return confirm ('kamu yakin mau dihapus?')"
+                        <a href="hapus.php?id_barang=<?php echo $result['id_barang']?>" onclick="return confirm ('kamu yakin mau dihapus?')"
                          class="btn btn-danger"><i class = "fa-solid fa-trash"></i>Hapus </a>
                 </tr>
                 <?php
